@@ -66,6 +66,36 @@ namespace RegexTest01
             Console.WriteLine(Regex.Match(text, pattern, RegexOptions.IgnoreCase));
         }
 
+        private static void Example6()
+        {
+            string patternIpAddress = @"^(\d{1,3}\.){3}\d{1,3}$";  // Not perfect, produces false positives
+            var regex = new Regex(patternIpAddress);
+
+            string validIpAddress = "192.168.88.15";
+            var match1 = regex.Match(validIpAddress);
+
+            if (match1.Success)
+            {
+                Console.WriteLine($"{validIpAddress} is a valid IP address");
+                Console.WriteLine(match1.Value);
+
+                validIpAddress
+                    .Split('.')
+                    .ToList()
+                    .ForEach(octet => Console.WriteLine(octet));
+
+                Console.WriteLine();
+            }
+
+            string invalidIpAddress = "192.168.";
+            var match2 = regex.Match(invalidIpAddress);
+
+            if (!match2.Success)
+            {
+                Console.WriteLine($"{invalidIpAddress} is an invalid IP address");
+            }
+        }
+
         static void Main(string[] args)
         {
             Console.WriteLine("Example 1");
@@ -86,6 +116,10 @@ namespace RegexTest01
 
             Console.WriteLine("Example 5");
             Example5();
+            Console.WriteLine();
+
+            Console.WriteLine("Example 6");
+            Example6();
             Console.WriteLine();
         }
     }
